@@ -1,4 +1,6 @@
 #!/bin/bash
+#medium: popalltheshells.medium.com
+#twitter: @popalltheshells
 a=0
 while [ $a -le 254 ]
 do
