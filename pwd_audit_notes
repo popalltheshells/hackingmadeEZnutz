@@ -1,0 +1,38 @@
+Useful Links:
+https://github.com/knavesec/Max/blob/master/wiki/dpat.md
+
+
+Password audits are where we test to see how many vulnerable passwords are present on a network, confirm on the IRL that the client actually wants a password audit
+
+Password audits can be performed an internal pen or Internal VA. It is important to know that for the password audit to run smoothly you will need to have DA Credentials so that you can dump the ntds.dit file.
+
+Typically on a Internal Pen you will only perform a pwd audit if you get DA or compromise the DC. 
+Otherwise if you are performing an Internal VA the client needs to provide you with a DA account so that you actually can dump the ntds.dit
+
+Major steps
+A. Setup Bloodhound
+	1. Obtain DA creds from client (when performing Int VA), or DA creds from exploitation (Int Pen)
+	2. Use bloodhound to obtain the AD enumeration files then setup neo4j and run bloodhound on local machine (this is standard practice during an internal Pen)
+		a. python3 bloodhound.py -c all -u USER -p "PASS" -ns [DNS IP} -dc DC01.domain.com -d domain.com
+			i. Run above command from nomad device on client network. You will need to transfer the .json files back to your testing laptop
+			ii. On your local machine, set up the neo4j DB and then run bloodhound in another local terminal
+				1) Sudo neo4j console
+					a) For neo4j, once you run the above command, navigate to localhost:7474, setup up access for yourself. Be sure to remember your password
+          
+ B. Bloodhound
+		b. Once bloodhound is up, import the 4 json files and ensure you can see the AD data in the Bloodhound UI
+	3. Back on the nomad, Use secretsdump to dump  all the NTLM hashes for all users on the domain so that you can crack those passwords and perform the Audit
+		a. Python3 secretsdump.py -just-dc-ntlm -user-status domain/username@DC-IP
+		b. Copy and Paste the full output into a txt file. Or just use the -outputfile flag from secretsdump
+			i. You will need to modify the formatting of this initial txt file.
+				1) Grep out disabled accounts
+				2) Remove Machine accounts (machine accounts have "$" in them)
+			ii. Preferred format of ntds.dit file for max to take:
+				
+				Domain\username:RID:lmhash:nthash:::
+				
+		c. Extract the NT Hash's from the output of secrets dump and put the NT hashes into another file. This is the file you will run thru hashcat (very important that you delete/start with no potfile in the hashcat directory prior to cracking, you need to be starting from a fresh potfile)
+			i. Hashcat -a 0 -m 1000 hashes.txt rockyou.txt -r OneRuleToRuleThemAll.txt -w4 -O
+			ii. Save the potfile that was created after you ran hashcat, you will supply this exact potfile to max.py
+	4. Now that you have your potfile with the cracked hashes, and you have your ntds.dit file which is properly formatted for max (see above) now you can run the max.py stat/analysis tool.
+		a. python3 max.py -u neo4j -p YourPASS dpat -n /path/to/NTDS.dit -c /path/to/hashcat.potfile --csv
