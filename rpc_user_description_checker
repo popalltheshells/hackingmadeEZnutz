@@ -1,0 +1,8 @@
+#!/bin/bash
+# popalltheshells.medium.com
+# Check for possible passwords contained in domain user descriptions: valid account/speciall null session might be needed
+
+cat uname.txt | while read LINE; do
+        echo $LINE
+        rpcclient <DC_IP> -U 'domain.local/username'%'password' -c "queryuser $LINE" | grep Description
+done
