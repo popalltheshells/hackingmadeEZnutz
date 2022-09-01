@@ -41,7 +41,7 @@ When on a Wireless pen-test -- if the target networks are WPA2PSK there are basi
 
 	`airodump-ng -c <channel> --bssid <D4:B9:2F:1E:C2:23> -w capture.txt wlan1mon`
   
-	It's important to make sure you are writing output to a file and naming your files in a wya that you and recall later because if you happen to capture a WPA handshake you will need the .cap file to provide to `aircrack-ng` for cracking.
+	It's important to make sure you are writing output to a file and naming your files in a way that you and recall later because if you happen to capture a WPA handshake you will need the .cap file to provide to `aircrack-ng` for cracking.
 
 
 2. **De-auth attack** on a specific client on a target network
