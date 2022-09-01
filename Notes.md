@@ -52,7 +52,9 @@ When on a Wireless pen-test -- if the target networks are WPA2PSK there are basi
 	If you dont get a handshake passively, you can try a **deauth attack**
 
 	A. First you need a target in a deauth attack. you might see something like below when you are listening to a specific network
-		![image](assets/Pasted image 20220831194215.png)
+	
+![image](assets/Pasted image 20220831194215.png)
+		
 	The *BSSID* is the MAC Address of the Access Point. Also good to think of it as just the MAC of the In-Scope Target network, always good to jot down these MAC's in your notes
 
 	The *STATION* is the individual devices connected to the AP. You can pick anyone of these stations as your target in the deauth attack
