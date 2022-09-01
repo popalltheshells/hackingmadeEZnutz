@@ -53,7 +53,7 @@ When on a Wireless pen-test -- if the target networks are WPA2PSK there are basi
 
 	A. First you need a target in a deauth attack. you might see something like below when you are listening to a specific network
 	
-![image](assets/Pasted image 20220831194215.png)
+![image](https://github.com/popalltheshells/hackingmadeEZnutz/blob/9a547edb4a463cf6f197a932d06239a0ca661c3e/assets/Pasted%20image%2020220831194215.png)
 		
 	The *BSSID* is the MAC Address of the Access Point. Also good to think of it as just the MAC of the In-Scope Target network, always good to jot down these MAC's in your notes
 
